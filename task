@@ -1,0 +1,106 @@
+
+```sql
+employees
+(
+ id,
+ name,
+ department,
+ salary,
+ hire_date
+)
+```
+
+### 1. Top 5 highest salary employees
+
+```sql
+SELECT *
+FROM employees
+ORDER BY salary DESC
+LIMIT 5;
+```
+
+### 2. Department-wise employee count
+
+```sql
+SELECT department, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department;
+```
+
+### 3. Second highest salary
+
+```sql
+SELECT MAX(salary)
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+```
+
+### 4. Employees whose salary > department average salary
+
+```sql
+SELECT e.*
+FROM employees e
+JOIN (
+    SELECT department, AVG(salary) avg_salary
+    FROM employees
+    GROUP BY department
+) d
+ON e.department = d.department
+WHERE e.salary > d.avg_salary;
+```
+
+### 5. Inner Join
+
+```sql
+SELECT e.name, d.department_name
+FROM employees e
+INNER JOIN departments d
+ON e.department_id = d.id;
+```
+
+### 6. Left Join
+
+```sql
+SELECT e.name, d.department_name
+FROM employees e
+LEFT JOIN departments d
+ON e.department_id = d.id;
+```
+
+### 7. Group By with Having
+
+```sql
+SELECT department, COUNT(*) AS total
+FROM employees
+GROUP BY department
+HAVING COUNT(*) > 5;
+```
+
+### 8. Employees hired in last 6 months
+
+```sql
+SELECT *
+FROM employees
+WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+```
+
+### 9. Find duplicate records
+
+```sql
+SELECT name, COUNT(*)
+FROM employees
+GROUP BY name
+HAVING COUNT(*) > 1;
+```
+
+### 10. Remove duplicate records
+
+Keep the smallest ID and delete the rest:
+
+```sql
+DELETE e1
+FROM employees e1
+JOIN employees e2
+ON e1.name = e2.name
+AND e1.id > e2.id;
+```
