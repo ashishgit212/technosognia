@@ -1,0 +1,73 @@
+-- Create Table
+CREATE TABLE Employee (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(50),
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2)
+);
+
+-- 1. Add Records
+INSERT INTO Employee VALUES
+(1, 'Ashish', 'IT', 50000),
+(2, 'Rahul', 'IT', 60000),
+(3, 'Priya', 'HR', 45000),
+(4, 'Sneha', 'HR', 55000),
+(5, 'Amit', 'Finance', 70000);
+
+-- 2. Window Function
+SELECT
+    EmpID,
+    EmpName,
+    Department,
+    Salary,
+    RANK() OVER (ORDER BY Salary DESC) AS SalaryRank,
+    ROW_NUMBER() OVER (
+        PARTITION BY Department
+        ORDER BY Salary DESC
+    ) AS DeptRank
+FROM Employee;
+
+-- 3. Create View
+CREATE VIEW HighSalaryEmployees AS
+SELECT EmpID, EmpName, Department, Salary
+FROM Employee
+WHERE Salary > 50000;
+
+-- View Output
+SELECT * FROM HighSalaryEmployees;
+
+-- 4. Create Audit Table
+CREATE TABLE EmployeeAudit (
+    AuditID INT IDENTITY(1,1),
+    EmpID INT,
+    ActionDate DATETIME
+);
+
+-- Create Trigger
+CREATE TRIGGER trg_AfterInsertEmployee
+ON Employee
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO EmployeeAudit (EmpID, ActionDate)
+    SELECT EmpID, GETDATE()
+    FROM inserted;
+END;
+
+-- Test Trigger
+INSERT INTO Employee VALUES
+(6, 'Karan', 'IT', 65000);
+
+-- Check Audit Records
+SELECT * FROM EmployeeAudit;
+
+-- 5. CASE WHEN
+SELECT
+    EmpName,
+    Salary,
+    CASE
+        WHEN Salary >= 70000 THEN 'High'
+        WHEN Salary >= 50000 THEN 'Medium'
+        ELSE 'Low'
+    END AS SalaryCategory
+FROM Employee;
