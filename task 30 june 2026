@@ -1,0 +1,150 @@
+import mysql.connector
+
+try:
+    con = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="YOUR_PASSWORD",
+        database="employee_db"
+    )
+
+    cursor = con.cursor()
+
+except Exception as e:
+    print("Database Connection Failed")
+    print(e)
+    exit()
+
+
+def add_employee():
+    try:
+        empid = int(input("Enter Employee ID: "))
+        name = input("Enter Name: ")
+        age = int(input("Enter Age: "))
+        department = input("Enter Department: ")
+        salary = float(input("Enter Salary: "))
+
+        sql = "INSERT INTO employee VALUES (%s,%s,%s,%s,%s)"
+        values = (empid, name, age, department, salary)
+
+        cursor.execute(sql, values)
+        con.commit()
+
+        print("Employee Added Successfully")
+
+    except Exception as e:
+        print("Error:", e)
+
+
+def view_employee():
+    cursor.execute("SELECT * FROM employee")
+    rows = cursor.fetchall()
+
+    if len(rows) == 0:
+        print("No Employee Found")
+    else:
+        print("\n---------------------------------------------")
+        print("ID\tName\tAge\tDepartment\tSalary")
+        print("---------------------------------------------")
+
+        for row in rows:
+            print(row[0], "\t", row[1], "\t", row[2], "\t", row[3], "\t", row[4])
+
+
+def search_employee():
+    try:
+        empid = int(input("Enter Employee ID: "))
+
+        cursor.execute("SELECT * FROM employee WHERE id=%s", (empid,))
+        row = cursor.fetchone()
+
+        if row:
+            print("\nEmployee Found")
+            print("ID:", row[0])
+            print("Name:", row[1])
+            print("Age:", row[2])
+            print("Department:", row[3])
+            print("Salary:", row[4])
+        else:
+            print("Employee Not Found")
+
+    except Exception as e:
+        print("Error:", e)
+
+
+def update_employee():
+    try:
+        empid = int(input("Enter Employee ID: "))
+        salary = float(input("Enter New Salary: "))
+
+        cursor.execute(
+            "UPDATE employee SET salary=%s WHERE id=%s",
+            (salary, empid)
+        )
+
+        con.commit()
+
+        if cursor.rowcount > 0:
+            print("Employee Updated Successfully")
+        else:
+            print("Employee Not Found")
+
+    except Exception as e:
+        print("Error:", e)
+
+
+def delete_employee():
+    try:
+        empid = int(input("Enter Employee ID: "))
+
+        cursor.execute(
+            "DELETE FROM employee WHERE id=%s",
+            (empid,)
+        )
+
+        con.commit()
+
+        if cursor.rowcount > 0:
+            print("Employee Deleted Successfully")
+        else:
+            print("Employee Not Found")
+
+    except Exception as e:
+        print("Error:", e)
+
+
+while True:
+
+    print("\n========== Employee Management System ==========")
+    print("1. Add Employee")
+    print("2. View Employee")
+    print("3. Search Employee")
+    print("4. Update Employee")
+    print("5. Delete Employee")
+    print("6. Exit")
+
+    choice = input("Enter Your Choice: ")
+
+    if choice == "1":
+        add_employee()
+
+    elif choice == "2":
+        view_employee()
+
+    elif choice == "3":
+        search_employee()
+
+    elif choice == "4":
+        update_employee()
+
+    elif choice == "5":
+        delete_employee()
+
+    elif choice == "6":
+        print("Thank You")
+        break
+
+    else:
+        print("Invalid Choice")
+
+con.close()
