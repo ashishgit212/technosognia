@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modification Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark px-3">
+    <div class="container-fluid">
+        <a href="{{ url_for('dashboard') }}" class="navbar-brand">Employee Management</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Modification Requests Status List</h2>
+        {% if session.role in ['Approver', 'Admin'] %}
+        <a href="{{ url_for('approver_dashboard') }}" class="btn btn-primary">Go to Approver Dashboard</a>
+        {% endif %}
+    </div>
+
+    <table class="table table-striped bg-white shadow-sm rounded mt-3">
+        <thead>
+            <tr>
+                <th>Contract / Clause</th>
+                <th>Original vs Proposed</th>
+                <th>Reason</th>
+                <th>Requested By</th>
+                <th>Status & Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests_list %}
+            <tr>
+                <td>
+                    <strong>{{ req.contract_title }}</strong>
+                    {% if req.clause_title %}
+                        <br><small class="text-muted">Clause: {{ req.clause_title }}</small>
+                    {% endif %}
+                    <br><small class="text-muted">Type: {{ req.request_type }}</small>
+                </td>
+                <td>
+                    <span class="text-danger"><strong>Orig:</strong> {{ req.original_value or 'N/A' }}</span><br>
+                    <span class="text-success"><strong>Prop:</strong> {{ req.proposed_modification }}</span>
+                </td>
+                <td>{{ req.reason }}</td>
+                <td>{{ req.requested_by }}<br><small class="text-muted">{{ req.created_at }}</small></td>
+                <td>
+                    <span class="badge 
+                        {% if req.status == 'APPROVED' %}bg-success
+                        {% elif req.status == 'REJECTED' %}bg-danger
+                        {% else %}bg-warning text-dark{% endif %}">
+                        {{ req.status }}
+                    </span>
+                    {% if req.approver_comment %}
+                        <br><small class="text-info">Comment: {{ req.approver_comment }}</small>
+                    {% endif %}
+                    {% if req.rejection_reason %}
+                        <br><small class="text-danger">Rejected: {{ req.rejection_reason }}</small>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-center">No modification requests found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('contracts_list') }}" class="btn btn-secondary mt-3">Back to Contracts</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

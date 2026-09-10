@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexCore - Executive Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --apex-bg: #0b0f17;
+            --apex-card-bg: #111827;
+            --apex-border: #1f2937;
+            --apex-accent: #3b82f6;
+            --apex-accent-hover: #2563eb;
+            --apex-text-main: #f9fafb;
+            --apex-text-muted: #9ca3af;
+        }
+
+        body {
+            background-color: var(--apex-bg);
+            color: var(--apex-text-main);
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+        }
+
+        /* Flat Navbar */
+        .navbar-apex {
+            background: var(--apex-card-bg);
+            border-bottom: 1px solid var(--apex-border);
+            padding: 14px 0;
+            box-shadow: none;
+        }
+
+        .apex-brand-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        .apex-brand-logo span {
+            color: var(--apex-accent);
+        }
+
+        .apex-nav-link {
+            color: var(--apex-text-muted) !important;
+            font-weight: 500;
+            font-size: 14px;
+            margin: 0 4px;
+            padding: 8px 14px !important;
+            border-radius: 6px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .apex-nav-link:hover, .apex-nav-link.active {
+            color: #ffffff !important;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Flat Metric Cards */
+        .apex-metric-card {
+            background: var(--apex-card-bg);
+            border: 1px solid var(--apex-border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .apex-metric-card:hover {
+            border-color: var(--apex-accent);
+        }
+
+        .apex-metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .apex-metric-label {
+            color: var(--apex-text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .apex-metric-icon {
+            font-size: 24px;
+            color: var(--apex-accent);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        /* Flat Panels */
+        .apex-panel {
+            background: var(--apex-card-bg);
+            border: 1px solid var(--apex-border);
+            border-radius: 10px;
+            box-shadow: none;
+            margin-bottom: 2rem;
+        }
+
+        .apex-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--apex-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .apex-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Flat Table Design */
+        .table-apex {
+            color: var(--apex-text-main);
+            margin-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .table-apex th {
+            background: #0d131f;
+            color: var(--apex-text-muted);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--apex-border);
+            padding: 14px 20px;
+        }
+
+        .table-apex td {
+            background: transparent;
+            border-bottom: 1px solid var(--apex-border);
+            padding: 16px 20px;
+            font-size: 14px;
+        }
+
+        .table-apex tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Clean Flat Status Badges */
+        .apex-badge-admin {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .apex-badge-hr {
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .apex-badge-employee {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Flat Buttons */
+        .apex-btn-primary {
+            background: var(--apex-accent);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.15s ease;
+            box-shadow: none;
+        }
+
+        .apex-btn-primary:hover {
+            background: var(--apex-accent-hover);
+            color: #ffffff;
+        }
+
+        .apex-btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.15s ease;
+        }
+
+        .apex-btn-delete:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* Flat Modals */
+        .modal-content {
+            background: var(--apex-card-bg);
+            border: 1px solid var(--apex-border);
+            color: var(--apex-text-main);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--apex-border);
+            background: #0d131f;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 18px 24px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--apex-border);
+            padding: 16px 24px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-control, .form-select {
+            background: #090d16;
+            border: 1px solid var(--apex-border);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: #090d16;
+            border-color: var(--apex-accent);
+            color: #ffffff;
+            box-shadow: none;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--apex-text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-apex">
+        <div class="container">
+            <a class="apex-brand-logo" href="#">
+                <i class="fas fa-layer-group me-2" style="color: var(--apex-accent);"></i>Apex<span>Core</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#apexNavbar">
+                <span class="navbar-toggler-icon text-white"><i class="fas fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="apexNavbar">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="apex-nav-link active" href="#"><i class="fas fa-chart-line me-2"></i>Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="apex-nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                            <i class="fas fa-user-plus me-2"></i>New Personnel
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="apex-nav-link text-danger" href="/logout"><i class="fas fa-power-off me-2"></i>Terminate</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h2 class="fw-bold mb-1" style="font-size: 1.75rem;">Executive Control Workspace</h2>
+                    <p class="text-muted mb-0" style="font-size: 14px;">Managing organizational directories and security clearance tiers.</p>
+                </div>
+                <button class="apex-btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                    <i class="fas fa-plus me-2"></i>Register Personnel
+                </button>
+            </div>
+        </div>
+
+        <!-- Metric Statistics Grid -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4 col-sm-6">
+                <div class="apex-metric-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="apex-metric-value">{{ employees|length }}</div>
+                            <div class="apex-metric-label">Total Roster</div>
+                        </div>
+                        <div class="apex-metric-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Standard Staff Count Card -->
+            <div class="col-md-4 col-sm-6">
+                <div class="apex-metric-card" style="border-left: 3px solid #10b981;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="apex-metric-value">
+                                {% set ns_staff = namespace(count=0) %}
+                                {% for emp in employees %}
+                                    {% if emp.role|string|lower in ['employee', 'staff', 'user'] %}
+                                        {% set ns_staff.count = ns_staff.count + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ ns_staff.count }}
+                            </div>
+                            <div class="apex-metric-label">Standard Staff</div>
+                        </div>
+                        <div class="apex-metric-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.1);"><i class="fas fa-user-check"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Human Resources Count Card -->
+            <div class="col-md-4 col-sm-6">
+                <div class="apex-metric-card" style="border-left: 3px solid #f59e0b;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="apex-metric-value">
+                                {% set ns_hr = namespace(count=0) %}
+                                {% for emp in employees %}
+                                    {% if emp.role|string|lower in ['hr', 'human resources'] %}
+                                        {% set ns_hr.count = ns_hr.count + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ ns_hr.count }}
+                            </div>
+                            <div class="apex-metric-label">Human Resources</div>
+                        </div>
+                        <div class="apex-metric-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.1);"><i class="fas fa-user-tie"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Personnel Database Table -->
+        <div class="apex-panel">
+            <div class="apex-panel-header">
+                <h5 class="apex-panel-title"><i class="fas fa-address-book me-2 text-primary"></i>Directory Roster</h5>
+                <button class="apex-btn-primary btn-sm px-3 py-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                    <i class="fas fa-plus me-1"></i> Add Record
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-apex">
+                    <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>Identity</th>
+                            <th>Contact</th>
+                            <th>Email Network</th>
+                            <th>Clearance Status</th>
+                            <th class="text-end">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                        <tr>
+                            <td><span class="text-muted font-monospace">#{{ emp.id }}</span></td>
+                            <td><span class="fw-semibold text-white"><i class="fas fa-user-circle me-2 text-muted"></i>{{ emp.name or emp.username or emp.fullname or 'Unnamed Entry' }}</span></td>
+                            <td>{{ emp.mobile or emp.phone or emp.phone_number or emp.contact or emp.tel or 'N/A' }}</td>
+                            <td><a href="mailto:{{ emp.email }}" class="text-decoration-none text-info">{{ emp.email }}</a></td>
+                            <td>
+                                {% set current_role = emp.role|string|lower %}
+                                {% if current_role == 'admin' %}
+                                    <span class="apex-badge-admin"><i class="fas fa-shield-alt me-1"></i>Admin</span>
+                                {% elif current_role in ['hr', 'human resources'] %}
+                                    <span class="apex-badge-hr"><i class="fas fa-id-badge me-1"></i>HR Lead</span>
+                                {% else %}
+                                    <span class="apex-badge-employee"><i class="fas fa-user me-1"></i>Member</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                {% if current_role != 'admin' %}
+                                <button class="apex-btn-delete" onclick="deleteEmployee({{ emp.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                {% else %}
+                                <span class="text-muted small"><i class="fas fa-lock me-1"></i>Protected</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">No directory records found in storage.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-white"><i class="fas fa-user-plus me-2 text-primary"></i>Register Personnel Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Full Legal Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="e.g. Alex Morgan" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mobile Contact</label>
+                                <input type="text" class="form-control" name="mobile" maxlength="10" placeholder="10-digit primary line" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" placeholder="alias@apexcore.org" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Username Handle</label>
+                                <input type="text" class="form-control" name="username" placeholder="Unique system alias" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" placeholder="Secure login key" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" name="dob" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Residential Address</label>
+                                <textarea class="form-control" name="address" rows="2" placeholder="Street and district configuration"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Clearance Tier Designation</label>
+                                <select class="form-select" name="role">
+                                    <option value="employee">Standard Member</option>
+                                    <option value="hr">Human Resources Lead</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+                            <button type="submit" class="apex-btn-primary w-100 py-2.5">
+                                <i class="fas fa-save me-2"></i>Commit Record to Storage
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Documentation -->
+    <footer class="py-3 border-top border-secondary border-opacity-10 mt-5">
+        <div class="container text-center text-muted small">
+            <p class="mb-0">&copy; 2026 ApexCore Workforce Manager &bull; Executive Administrative Environment</p>
+        </div>
+    </footer>
+
+    <!-- Async Dynamic Logic Handlers -->
+    <script>
+        document.getElementById('addEmployeeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const payload = new FormData(this);
+            
+            fetch('/add_employee', {
+                method: 'POST',
+                body: payload
+            })
+            .then(res => res.json())
+            .then(responseObj => {
+                if (responseObj.success) {
+                    alert('Personnel profile registered successfully.');
+                    location.reload();
+                } else {
+                    alert('Registration Failed: ' + responseObj.message);
+                }
+            })
+            .catch(err => {
+                alert('Transmission Error: ' + err.message);
+            });
+        });
+
+        function deleteEmployee(id) {
+            if (confirm('Are you certain you want to purge this record from the directory?')) {
+                fetch('/delete_employee/' + id, {
+                    method: 'POST'
+                })
+                .then(res => res.json())
+                .then(responseObj => {
+                    if (responseObj.success) {
+                        alert('Personnel profile successfully purged.');
+                        location.reload();
+                    } else {
+                        alert('Purge Failed: ' + responseObj.message);
+                    }
+                })
+                .catch(err => {
+                    alert('Transmission Error: ' + err.message);
+                });
+            }
+        }
+    </script>
+
+    <!-- Bootstrap Script Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

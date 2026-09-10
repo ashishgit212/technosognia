@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Portal - Core Operations</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #0f172a;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --surface-color: #ffffff;
+            --body-bg: #f8fafc;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+        }
+
+        .navbar-custom {
+            background-color: var(--primary-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent-color);
+        }
+
+        .nav-link-custom {
+            color: #94a3b8 !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: #ffffff !important;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-card {
+            background: var(--surface-color);
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-card .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-container {
+            background: var(--surface-color);
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .btn-action-delete {
+            background: #fee2e2;
+            color: var(--danger-color);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .btn-action-delete:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .status-pill-admin {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pill-member {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary-custom:hover {
+            opacity: 0.9;
+            color: white;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom py-3">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="fas fa-cubes text-primary"></i>
+                <span class="logo-text">Nexus<span>Core</span></span>
+            </a>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="portalNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="#"><i class="fas fa-chart-pie me-1"></i>Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                            <i class="fas fa-user-plus me-1"></i>Onboard User
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link nav-link-custom text-danger-emphasis" href="/logout"><i class="fas fa-power-off me-1"></i>Sign Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Workspace -->
+    <div class="container-fluid px-4 py-4">
+        <div class="row mb-4 align-items-center">
+            <div class="col">
+                <h3 class="fw-bold text-dark m-0">Operations Command Center</h3>
+                <p class="text-muted small m-0 mt-1">Real-time overview of personnel metrics and directory logs.</p>
+            </div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="metric-card d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="metric-label">Directory Total</div>
+                        <div class="metric-value mt-1">{{ employees|length }}</div>
+                    </div>
+                    <div class="metric-icon" style="background: #e0f2fe; color: #0284c7;">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Grid Table Section -->
+        <div class="table-container p-3">
+            <div class="d-flex justify-content-between align-items-center p-2 mb-3 border-bottom">
+                <h5 class="fw-semibold text-secondary m-0"><i class="fas fa-table me-2"></i>Personnel Directory</h5>
+                <button class="btn btn-primary-custom btn-sm" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                    <i class="fas fa-plus me-1"></i>Add Record
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-custom align-middle mb-0">
+                    <thead class="table-light text-uppercase fs-7 text-muted">
+                        <tr>
+                            <th class="py-3">Code</th>
+                            <th class="py-3">Full Name</th>
+                            <th class="py-3">Contact</th>
+                            <th class="py-3">Email Address</th>
+                            <th class="py-3">Permission Level</th>
+                            <th class="py-3 text-end">Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                        <tr>
+                            <td><span class="font-monospace text-muted">#{{ emp.id }}</span></td>
+                            <td class="fw-medium text-dark">
+                                <i class="fas fa-id-badge text-muted me-1"></i>
+                                {% if emp.name %}
+                                    {{ emp.name }}
+                                {% elif emp.full_name %}
+                                    {{ emp.full_name }}
+                                {% elif emp.fullname %}
+                                    {{ emp.fullname }}
+                                {% elif emp.username %}
+                                    {{ emp.username }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if emp.mobile %}
+                                    {{ emp.mobile }}
+                                {% elif emp.phone %}
+                                    {{ emp.phone }}
+                                {% elif emp.contact %}
+                                    {{ emp.contact }}
+                                {% else %}
+                                    <span class="text-muted fst-italic">No Contact Added</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">{{ emp.email }}</td>
+                            <td>
+                                {% if emp.role == 'hr' %}
+                                    <span class="status-pill-admin">Administrator</span>
+                                {% else %}
+                                    <span class="status-pill-member">Standard</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                {% if emp.role == 'employee' %}
+                                <button class="btn btn-action-delete btn-sm" onclick="deleteEmployee({{ emp.id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                {% else %}
+                                <span class="text-muted small"><i class="fas fa-lock me-1"></i>Secured</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No records available in the database.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registrationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white px-4 py-3">
+                    <h5 class="modal-title fs-6"><i class="fas fa-user-plus me-2 text-primary"></i>Onboard New Personnel</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="addEmployeeForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Full Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Mobile Number</label>
+                                <input type="text" class="form-control" name="mobile" maxlength="10" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Email Address</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">System Username</label>
+                                <input type="text" class="form-control" name="username" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Access Password</label>
+                                <input type="password" class="form-control" name="password" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Date of Birth</label>
+                                <input type="date" class="form-control" name="dob" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Physical Address</label>
+                                <textarea class="form-control" name="address" rows="2"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Access Level / Role</label>
+                                <select class="form-select" name="role">
+                                    <option value="employee">Standard Member</option>
+                                    <option value="hr">Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                                <i class="fas fa-save me-2"></i>Commit Record to System
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Script Routines -->
+    <script>
+        document.getElementById('addEmployeeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            fetch('/add_employee', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Record successfully committed!');
+                    location.reload();
+                } else {
+                    alert('Operation Failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('System Error: ' + error.message);
+            });
+        });
+
+        function deleteEmployee(id) {
+            if (confirm('Confirm permanent removal of this entity record?')) {
+                fetch('/delete_employee/' + id, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Record purged successfully!');
+                        location.reload();
+                    } else {
+                        alert('Operation Failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('System Error: ' + error.message);
+                });
+            }
+        }
+    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

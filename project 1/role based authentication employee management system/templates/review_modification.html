@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Modification Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function toggleRejectionBox() {
+            let action = document.getElementById('actionSelect').value;
+            let rejectDiv = document.getElementById('rejectionReasonDiv');
+            if (action === 'REJECT') {
+                rejectDiv.style.display = 'block';
+            } else {
+                rejectDiv.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow p-4">
+        <h2>Review Modification Request #{{ req.id }}</h2>
+        <hr>
+        <p><strong>Contract:</strong> {{ req.contract_title }}</p>
+        {% if req.clause_title %}
+        <p><strong>Target Clause:</strong> {{ req.clause_title }}</p>
+        {% endif %}
+        <p><strong>Modification Type:</strong> {{ req.request_type }}</p>
+        <p><strong>Requested By:</strong> {{ req.requested_by }} on {{ req.created_at }}</p>
+        <p><strong>Reason for Request:</strong> {{ req.reason }}</p>
+
+        <!-- Side-by-Side Comparison[cite: 2] -->
+        <div class="row mt-3 mb-4">
+            <div class="col-md-6">
+                <div class="p-3 border rounded bg-light h-100">
+                    <h6 class="text-secondary fw-bold">Original Value / Text:</h6>
+                    <p class="mb-0">{{ req.original_value or 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border rounded bg-warning bg-opacity-10 h-100">
+                    <h6 class="text-dark fw-bold">Proposed Modified Value:</h6>
+                    <p class="mb-0">{{ req.proposed_modification }}</p>
+                </div>
+            </div>
+        </div>
+
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Decision Action</label>
+                <select name="action" id="actionSelect" class="form-select" onchange="toggleRejectionBox()" required>
+                    <option value="APPROVE">Approve</option>
+                    <option value="REJECT">Reject</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Approver Comments (Optional)</label>
+                <textarea name="approver_comment" class="form-control" rows="2" placeholder="Add comments here..."></textarea>
+            </div>
+            <div class="mb-3" id="rejectionReasonDiv" style="display: none;">
+                <label class="form-label text-danger">Rejection Reason Required</label>
+                <textarea name="rejection_reason" class="form-control" rows="2" placeholder="Explain why this request is rejected..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Decision</button>
+            <a href="{{ url_for('approver_dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

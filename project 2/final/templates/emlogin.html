@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnel Gateway - Enterprise Matrix</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #94a3b8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient glowing background grid elements */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(14, 165, 233, 0.08);
+            filter: blur(120px);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(99, 102, 241, 0.08);
+            filter: blur(120px);
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+            z-index: 0;
+        }
+
+        .matrix-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+            z-index: 1;
+        }
+
+        .matrix-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .matrix-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .node-icon-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: #ffffff;
+            font-size: 26px;
+            box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4);
+        }
+
+        .matrix-header h1 {
+            color: #f8fafc;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .matrix-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .control-pod {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .control-pod i {
+            position: absolute;
+            left: 16px;
+            color: #64748b;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .matrix-input {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 16px 14px 48px;
+            color: #f1f5f9;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-input::placeholder {
+            color: #475569;
+        }
+
+        .matrix-input:focus {
+            border-color: #0ea5e9;
+            background: rgba(2, 6, 23, 0.8);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+        }
+
+        .matrix-input:focus + i,
+        .control-pod:focus-within i {
+            color: #0ea5e9;
+        }
+
+        .execute-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .execute-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .execute-btn:active {
+            transform: translateY(0);
+        }
+
+        .matrix-footer {
+            margin-top: 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+        }
+
+        .matrix-footer p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .matrix-footer a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .matrix-footer a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="matrix-wrapper">
+        <div class="matrix-panel">
+            <div class="matrix-header">
+                <div class="node-icon-box">
+                    <i class="ri-shield-user-line"></i>
+                </div>
+                <h1>Personnel Terminal</h1>
+                <p>Authenticate to access your workspace node</p>
+            </div>
+
+            <form id="terminalAuthForm">
+                <div class="field-group">
+                    <label>Network Identifier</label>
+                    <div class="control-pod">
+                        <i class="ri-user-3-line"></i>
+                        <input type="text" class="matrix-input" name="username" placeholder="Enter username credential" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Access Passkey</label>
+                    <div class="control-pod">
+                        <i class="ri-lock-password-line"></i>
+                        <input type="password" class="matrix-input" name="password" placeholder="Enter security secret" required>
+                    </div>
+                </div>
+
+                <!-- Hidden system role payload -->
+                <input type="hidden" name="role" value="employee">
+
+                <button type="submit" class="execute-btn">
+                    <i class="ri-login-box-line"></i> Initialize Session
+                </button>
+            </form>
+
+            <div class="matrix-footer">
+                <p>Unregistered entity? <a href="/registration">Provision identity</a></p>
+                <p><a href="/"><i class="ri-arrow-left-line"></i> Return to Gateway Root</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('terminalAuthForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const payloadData = new FormData(this);
+            
+            fetch('/login_employee', {
+                method: 'POST',
+                body: payloadData
+            })
+            .then(res => res.json())
+            .then(resData => {
+                if (resData.success) {
+                    window.location.href = resData.redirect;
+                } else {
+                    alert('Authentication Interrupted: ' + resData.message);
+                }
+            })
+            .catch(err => {
+                alert('Terminal System Error: ' + err.message);
+            });
+        });
+    </script>
+</body>
+</html>

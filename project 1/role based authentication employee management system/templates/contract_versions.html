@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Version History - {{ contract.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark px-3">
+    <div class="container-fluid">
+        <a href="{{ url_for('dashboard') }}" class="navbar-brand">Employee Management</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2>Version History for: {{ contract.title }}</h2>
+    <hr>
+    <div class="list-group mt-3">
+        {% for ver in versions %}
+        <div class="list-group-item list-group-item-action flex-column align-items-start mb-3 shadow-sm rounded">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary">Version {{ ver.version_number }}</h5>
+                <small class="text-muted">Modified by: {{ ver.changed_by }} on {{ ver.created_at }}</small>
+            </div>
+            <p class="mb-1 mt-2"><strong>Title:</strong> {{ ver.title }}</p>
+            <p class="mb-1"><strong>Description/Content snapshot:</strong> {{ ver.description or 'No description provided' }}</p>
+        </div>
+        {% else %}
+        <p class="text-center">No version history records found.</p>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('contract_detail', id=contract.id) }}" class="btn btn-secondary mt-3">Back to Contract Details</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

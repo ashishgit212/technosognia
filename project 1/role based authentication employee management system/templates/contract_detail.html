@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contract Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow p-4">
+        <h2>{{ contract.title }}</h2>
+        <hr>
+        <p><strong>Status:</strong> 
+            <span class="badge 
+                {% if contract.status == 'Active' %}bg-success
+                {% elif contract.status == 'Draft' %}bg-secondary
+                {% elif contract.status == 'Expired' %}bg-warning text-dark
+                {% else %}bg-danger{% endif %}">
+                {{ contract.status }}
+            </span>
+        </p>
+        <p><strong>Created By:</strong> {{ contract.created_by }}</p>
+        <p><strong>Created At:</strong> {{ contract.created_at }}</p>
+        <p><strong>Description:</strong></p>
+        <div class="p-3 bg-light border rounded mb-3">
+            {{ contract.description or 'No description provided.' }}
+        </div>
+        <a href="{{ url_for('contracts_list') }}" class="btn btn-secondary">Back to Contracts</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!-- templates/create_contract.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Contract</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow p-4">
+        <h2>Create New Legal Contract</h2>
+        <hr>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Contract Title</label>
+                <input type="text" name="title" class="form-control" required placeholder="e.g., Master Services Agreement - Vendor X">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contract Content & Clauses</label>
+                <textarea name="content" class="form-control" rows="8" required placeholder="Enter full legal contract text..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Publish Contract</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

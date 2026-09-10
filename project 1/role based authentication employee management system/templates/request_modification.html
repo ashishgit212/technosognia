@@ -1,0 +1,46 @@
+<!-- templates/request_modification.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Request Contract Modification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow p-4">
+        <h2>Request Modification for: {{ contract.title }}</h2>
+        <hr>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Clause Title / Section (Optional)</label>
+                <input type="text" name="clause_title" class="form-control" placeholder="e.g., Section 4: Payment Terms">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Modification Type</label>
+                <select name="request_type" class="form-select" required>
+                    <option value="Clause Amendment">Clause Amendment</option>
+                    <option value="Addition">New Clause Addition</option>
+                    <option value="Deletion">Clause Deletion</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Original Value / Text</label>
+                <textarea name="original_value" class="form-control" rows="2" placeholder="Paste original text if modifying..."></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Proposed Modified Value / Text</label>
+                <textarea name="proposed_modification" class="form-control" rows="3" required placeholder="Enter proposed replacement text..."></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Reason for Request</label>
+                <textarea name="reason" class="form-control" rows="2" required placeholder="Explain why this change is necessary..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Modification Request</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
