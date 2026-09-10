@@ -61,6 +61,12 @@ def register():
         password = request.form['password']
         role = request.form.get('role', 'user')
         
+        # Verify secret key if trying to register as admin
+        if role == 'admin':
+            admin_secret_key = request.form.get('admin_secret_key')
+            if admin_secret_key != 'ADMIN_SECRET_123':
+                return f"Registration Error: Invalid Administrator Secret Key. <a href='/register'>Try again</a>"
+        
         conn = get_db_connection()
         cursor = conn.cursor()
         try:
